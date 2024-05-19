@@ -5,8 +5,16 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { Metadata } from "next";
 import React from "react";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "DevOverflow",
+  description:
+    "DevOverflow - A place to ask and answer questions",
+};
+
 export default function RootLayout({
   children,
 }: {
