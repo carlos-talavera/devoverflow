@@ -6,6 +6,7 @@ import {
 } from "next/font/google";
 import React from "react";
 
+import { ThemeProvider } from "@/context/ThemeProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -45,22 +46,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider
-      appearance={{
-        elements: {
-          formButtonPrimary: "primary-gradient",
-          footerActionLink:
-            "primary-text-gradient hover:text-primary-500",
-        },
-      }}
-    >
-      <html lang="en">
-        <body
-          className={`${inter.variable} ${spaceGrotesk.variable}`}
+    <html lang="en">
+      <body
+        className={`${inter.variable} ${spaceGrotesk.variable}`}
+      >
+        <ClerkProvider
+          appearance={{
+            elements: {
+              formButtonPrimary:
+                "primary-gradient",
+              footerActionLink:
+                "primary-text-gradient hover:text-primary-500",
+            },
+          }}
         >
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
