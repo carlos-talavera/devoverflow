@@ -1,8 +1,21 @@
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <>
+      <SignedOut>
+        <SignInButton />
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </>
+  );
+};
 
-export default Home
+export default Home;
