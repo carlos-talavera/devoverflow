@@ -1,8 +1,6 @@
 import {
   SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
+  SignedOut
 } from "@clerk/nextjs";
 
 const Home = () => {
@@ -11,9 +9,6 @@ const Home = () => {
       <SignedOut>
         <SignInButton />
       </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
     </>
   );
 };
