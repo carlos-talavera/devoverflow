@@ -5,7 +5,7 @@ import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
 import Link from "next/link";
 
-const Community = async () => {
+const Page = async () => {
   const result = await getAllUsers({});
 
   return (
@@ -59,4 +59,4 @@ const Community = async () => {
   );
 }
 
-export default Community
+export default Page
