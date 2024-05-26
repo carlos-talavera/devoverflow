@@ -2,6 +2,7 @@
 
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answer.action";
 import { downvoteQuestion, upvoteQuestion } from "@/lib/actions/question.action";
+import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { formatNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -29,8 +30,12 @@ const Votes = ({
 } : Props) => {
   const pathname = usePathname();
 
-  const handleSave = () => {
-
+  const handleSave = async () => {
+    await toggleSaveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path: pathname,
+    });
   }
 
   const handleVote = async (action: string) => {
@@ -41,16 +46,16 @@ const Votes = ({
     if (action === "upvote") {
       if (type === "question") {
         await upvoteQuestion({
-          questionId: itemId,
-          userId,
+          questionId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
           hasUpvoted,
           hasDownvoted,
           path: pathname
         })
       } else if (type === "answer") {
         await upvoteAnswer({
-          answerId: itemId,
-          userId,
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
           hasUpvoted,
           hasDownvoted,
           path: pathname
@@ -64,20 +69,20 @@ const Votes = ({
     if (action === "downvote") {
       if (type === "question") {
         await downvoteQuestion({
-          questionId: itemId,
-          userId,
+          questionId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
           hasUpvoted,
           hasDownvoted,
           path: pathname,
         });
       } else if (type === "answer") {
         await downvoteAnswer({
-          answerId: itemId,
-          userId,
+          answerId: JSON.parse(itemId),
+          userId: JSON.parse(userId),
           hasUpvoted,
           hasDownvoted,
-          path: pathname
-        })
+          path: pathname,
+        });
       }
 
       // TODO: show a toast message

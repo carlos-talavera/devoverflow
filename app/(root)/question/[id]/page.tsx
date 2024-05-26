@@ -55,8 +55,8 @@ const Page = async ({
           <div className="flex justify-end">
             <Votes
               type="question"
-              itemId={result._id}
-              userId={mongoUser._id}
+              itemId={JSON.stringify(result._id)}
+              userId={JSON.stringify(mongoUser._id)}
               upvotes={result.upvotes.length}
               hasUpvoted={result.upvotes.includes(mongoUser._id)}
               downvotes={result.downvotes.length}
