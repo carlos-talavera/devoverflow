@@ -6,7 +6,6 @@ import { Webhook } from "svix";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
-  // TODO: Add webhook secret to .env or .env.local
   const WEBHOOK_SECRET =
     process.env.WEBHOOK_SECRET;
 
