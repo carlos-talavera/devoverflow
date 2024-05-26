@@ -5,90 +5,12 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const questions = [
-  {
-    _id: 1,
-    title: "Cascading Deletes in Django like a pro? Give me the best practices!",
-    tags: [
-      {
-        _id: 1,
-        name: "django",
-      },
-      {
-        _id: 2,
-        name: "python",
-      },
-    ],
-    author: {
-      _id: 1,
-      name: "John Doe",
-      picture:
-        "https://randomuser.me/api/portraits/men/1.jpg",
-    },
-    upvotes: Math.floor(Math.random() * 100),
-    views: Math.floor(Math.random() * 1000),
-    answers: Array.from(
-      { length: Math.floor(Math.random() * 10) },
-      (_, index) => ({
-        _id: index,
-        content: "Sample answer content",
-        author: {
-          _id: Math.floor(Math.random() * 100),
-          name: "Random User",
-          picture:
-            "https://randomuser.me/api/portraits/men/2.jpg",
-        },
-        createdAt: new Date().toISOString(),
-      })
-    ),
-    createdAt: new Date(
-      "2021-09-01T00:00:00.000Z"
-    ),
-  },
-  {
-    _id: 2,
-    title: "How to center a div?",
-    tags: [
-      {
-        _id: 3,
-        name: "css",
-      },
-      {
-        _id: 4,
-        name: "html",
-      },
-    ],
-    author: {
-      _id: 2,
-      name: "Jane Doe",
-      picture:
-        "https://randomuser.me/api/portraits/women/2.jpg",
-    },
-    upvotes: Math.floor(Math.random() * 100),
-    views: Math.floor(Math.random() * 1000),
-    answers: Array.from(
-      { length: Math.floor(Math.random() * 10) },
-      (_, index) => ({
-        _id: index,
-        content: "Sample answer content",
-        author: {
-          _id: Math.floor(Math.random() * 100),
-          name: "Random User",
-          picture:
-            "https://randomuser.me/api/portraits/women/3.jpg",
-        },
-        createdAt: new Date().toISOString(),
-      })
-    ),
-    createdAt: new Date(
-      "2021-09-10T00:00:00.000Z"
-    ),
-  },
-];
+const Home = async () => {
+  const result = await getQuestions({})
 
-const Home = () => {
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -125,8 +47,8 @@ const Home = () => {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? 
-          questions.map((question) => 
+        {result.questions.length > 0 ? 
+          result.questions.map((question) => 
           (
             <QuestionCard
               key={question._id}
