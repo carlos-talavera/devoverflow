@@ -11,10 +11,15 @@ import { auth } from "@clerk/nextjs/server"
 import Image from "next/image"
 import Link from "next/link"
 
+interface Props {
+  params: { id: string };
+  searchParams: string[];
+}
+
 const Page = async ({
   params,
   searchParams
-}) => {
+} : Props) => {
   const result = await getQuestionById({
     questionId: params.id
   })
