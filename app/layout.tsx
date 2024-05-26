@@ -7,6 +7,7 @@ import {
 import React from "react";
 
 import { ThemeProvider } from "@/context/ThemeProvider";
+import "@/styles/prism.css";
 import "./globals.css";
 
 const inter = Inter({

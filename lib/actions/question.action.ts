@@ -6,7 +6,7 @@ import User from "@/database/user.model";
 import console from "console";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
-import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import { CreateQuestionParams, GetQuestionByIdParams, GetQuestionsParams, QuestionVoteParams } from "./shared.types";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
@@ -76,6 +76,115 @@ export async function createQuestion(params: CreateQuestionParams) {
     // Increment author's reputation by +5 for creating a question
 
     // Revalidate the path so that the new question is displayed on the home page
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getQuestionById(params: GetQuestionByIdParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId } = params;
+
+    const question = await Question.findById(questionId)
+      .populate({
+        path: "tags",
+        model: Tag,
+        select: "_id name"
+      })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture"
+      });
+
+    return question
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function upvoteQuestion(params: QuestionVoteParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId, userId, hasUpvoted, hasDownvoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasUpvoted) {
+      updateQuery = {
+        $pull: { upvotes: userId }
+      }
+    } else if (hasDownvoted) {
+      updateQuery = {
+        $pull: { downvotes: userId },
+        $push: { upvotes: userId }
+      }
+    } else {
+      updateQuery = {
+        $addToSet: { upvotes: userId }
+      }
+    }
+
+    const question = await Question.findByIdAndUpdate(
+      questionId,
+      updateQuery,
+      { new: true }
+    )
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    // TODO: increment author's reputation
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function downvoteQuestion(params: QuestionVoteParams) {
+  try {
+    connectToDatabase();
+
+    const { questionId, userId, hasUpvoted, hasDownvoted, path } = params;
+
+    let updateQuery = {};
+
+    if (hasDownvoted) {
+      updateQuery = {
+        $pull: { downvotes: userId }
+      }
+    } else if (hasUpvoted) {
+      updateQuery = {
+        $pull: { upvotes: userId },
+        $push: { downvotes: userId }
+      }
+    } else {
+      updateQuery = {
+        $addToSet: { downvotes: userId }
+      }
+    }
+
+    const question = await Question.findByIdAndUpdate(
+      questionId,
+      updateQuery,
+      { new: true }
+    )
+
+    if (!question) {
+      throw new Error("Question not found");
+    }
+
+    // TODO: increment author's reputation
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);
