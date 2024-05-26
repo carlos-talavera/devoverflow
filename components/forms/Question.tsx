@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { createQuestion } from "@/lib/actions/question.action";
 import { QuestionsSchema } from "@/lib/validations";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
 
 const type : any = "create"
@@ -35,7 +35,6 @@ const Question = ({
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
 
   // 1. Define your form.
   const form = useForm<
