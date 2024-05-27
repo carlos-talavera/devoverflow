@@ -7,19 +7,15 @@ import Votes from "@/components/shared/Votes"
 import { getQuestionById } from "@/lib/actions/question.action"
 import { getUserById } from "@/lib/actions/user.action"
 import { formatNumber, getTimestamp } from "@/lib/utils"
+import { URLProps } from "@/types"
 import { auth } from "@clerk/nextjs/server"
 import Image from "next/image"
 import Link from "next/link"
 
-interface Props {
-  params: { id: string };
-  searchParams: string[];
-}
-
 const Page = async ({
   params,
   searchParams
-} : Props) => {
+} : URLProps) => {
   const result = await getQuestionById({
     questionId: params.id
   })
