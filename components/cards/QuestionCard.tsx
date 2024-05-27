@@ -4,6 +4,7 @@ import Metric from "../shared/Metric";
 import RenderTag from "../shared/RenderTag";
 
 interface QuestionProps {
+  clerkId?: string | null;
   _id: number;
   title: string;
   tags: {
@@ -22,6 +23,7 @@ interface QuestionProps {
 }
 
 const QuestionCard = ({
+  clerkId,
   _id,
   title,
   tags,

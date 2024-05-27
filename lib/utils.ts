@@ -41,3 +41,13 @@ export const formatNumber = (num: number): string => {
     return num.toString();
   }
 };
+
+export const formatDate = (date: Date): string => {
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const month = monthNames[date.getMonth()]; // getMonth() returns month from 0-11
+    const year = date.getFullYear();
+    return `${month} ${year}`;
+}
