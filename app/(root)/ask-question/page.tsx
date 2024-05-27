@@ -21,6 +21,7 @@ const Page = async () => {
         className="mt-9"
       >
         <Question
+          type="create"
           mongoUserId={JSON.stringify(mongoUser._id)}
         />
       </div>

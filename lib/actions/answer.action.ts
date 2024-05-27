@@ -5,7 +5,7 @@ import Question from "@/database/question.model";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
-import { AnswerVoteParams, CreateAnswerParams, GetAnswersParams } from "./shared.types";
+import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
 
 export async function createAnswer(params: CreateAnswerParams) {
   try {
@@ -150,6 +150,36 @@ export async function downvoteAnswer(
     }
 
     // TODO: increment author's reputation
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteAnswer(
+  params: DeleteAnswerParams
+) {
+  try {
+    connectToDatabase();
+
+    const { answerId, path } = params;
+
+    const answer = await Answer.findById(answerId);
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    await Answer.deleteOne({
+      _id: answerId,
+    });
+
+    await Question.updateOne(
+      { _id: answer.question },
+      { $pull: { answers: answerId } }
+    );
 
     revalidatePath(path);
   } catch (error) {

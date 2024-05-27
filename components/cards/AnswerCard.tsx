@@ -4,6 +4,8 @@ import {
   formatNumber,
   getTimestamp,
 } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteActions from "../shared/EditDeleteActions";
 import Metric from "../shared/Metric";
 // import EditDeleteAction from "../shared/EditDeleteAction";
 
@@ -32,8 +34,7 @@ const AnswerCard = ({
   upvotes,
   createdAt,
 }: Props) => {
-  // const showActionButtons =
-  //   clerkId && clerkId === author.clerkId;
+  const showActionButtons = clerkId && clerkId === author.clerkId;
 
   return (
     <Link
@@ -50,14 +51,14 @@ const AnswerCard = ({
           </h3>
         </div>
 
-        {/* <SignedIn>
+        <SignedIn>
           {showActionButtons && (
-            <EditDeleteAction
-              type="Answer"
+            <EditDeleteActions
+              type="answer"
               itemId={JSON.stringify(_id)}
             />
           )}
-        </SignedIn> */}
+        </SignedIn>
       </div>
 
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
