@@ -1,11 +1,11 @@
 export const AnswerFilters = [
   {
     name: "Highest Upvotes",
-    value: "highestUpvotes",
+    value: "highest_upvotes",
   },
   {
     name: "Lowest Upvotes",
-    value: "lowestUpvotes",
+    value: "lowest_upvotes",
   },
   { name: "Most Recent", value: "recent" },
   { name: "Oldest", value: "old" },
