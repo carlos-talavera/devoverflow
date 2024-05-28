@@ -1,58 +1,12 @@
+import { getHotQuestions } from "@/lib/actions/question.action";
+import { getPopularTags } from "@/lib/actions/tag.action";
 import Image from "next/image";
 import Link from "next/link";
 import RenderTag from "./RenderTag";
 
-const RightSidebar = () => {
-  const hotQuestions = [
-    {
-      _id: 1,
-      title: "How to create a custom hook in React?",
-    },
-    {
-      _id: 2,
-      title: "How to learn React?",
-    },
-    {
-      _id: 3,
-      title: "How long does it take to learn React?",
-    },
-    {
-      _id: 4,
-      title: "How should I start learning React?",
-    },
-    {
-      _id: 5,
-      title: "How much does it cost to learn React?",
-    }
-  ]
-
-  const popularTags = [
-    {
-      _id: 1,
-      name: "React",
-      totalQuestions: 5
-    },
-    {
-      _id: 2,
-      name: "Javascript",
-      totalQuestions: 2
-    },
-    {
-      _id: 3,
-      name: "Next.js",
-      totalQuestions: 10
-    },
-    {
-      _id: 4,
-      name: "Vue",
-      totalQuestions: 5
-    },
-    {
-      _id: 5,
-      name: "Redux",
-      totalQuestions: 7
-    }
-  ]
+const RightSidebar = async () => {
+  const hotQuestions = await getHotQuestions();
+  const popularTags = await getPopularTags();
 
   return (
     <section className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 flex h-screen w-[350px] flex-col overflow-y-auto border-l p-6 pt-36 shadow-light-300 dark:shadow-none max-xl:hidden">
@@ -63,7 +17,7 @@ const RightSidebar = () => {
         <div className="mt-7 flex w-full flex-col gap-[30px]">
           {hotQuestions.map((question) => (
             <Link
-              href={`/questions/${question._id}`}
+              href={`/question/${question._id}`}
               key={question._id}
               className="flex cursor-pointer items-center justify-between gap-7"
             >
