@@ -2,6 +2,7 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
+import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
@@ -14,7 +15,8 @@ const Page = async ({
 } : SearchParamsProps) => {
   const result = await getQuestions({
     searchQuery: searchParams.q,
-    filter: searchParams.filter
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   })
 
   // TODO: fetch recommended
@@ -55,9 +57,8 @@ const Page = async ({
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.questions.length > 0 ? 
-          result.questions.map((question) => 
-          (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
@@ -69,7 +70,7 @@ const Page = async ({
               answers={question.answers}
               createdAt={question.createdAt}
             />
-          )
+          ))
         ) : (
           <NoResult
             title="There's no question to show"
@@ -78,6 +79,15 @@ const Page = async ({
             linkTitle="Ask a Question"
           />
         )}
+      </div>
+
+      <div
+        className="mt-10"
+      >
+        <Pagination
+          pageNumber={searchParams?.page ? +searchParams.page : 1}
+          isNext={result.isNext}
+        />
       </div>
     </>
   );

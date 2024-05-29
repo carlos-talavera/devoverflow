@@ -1,5 +1,6 @@
 import UserCard from "@/components/cards/UserCard";
 import Filter from "@/components/shared/Filter";
+import Pagination from "@/components/shared/Pagination";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { UserFilters } from "@/constants/filters";
 import { getAllUsers } from "@/lib/actions/user.action";
@@ -11,7 +12,8 @@ const Page = async ({
 } : SearchParamsProps) => {
   const result = await getAllUsers({
     searchQuery: searchParams.q,
-    filter: searchParams.filter
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   });
 
   return (
@@ -34,10 +36,8 @@ const Page = async ({
           otherClasses="min-h-[56px] sm:min-w-[170px]"
         />
       </div>
-      
-      <section
-        className="mt-12 flex flex-wrap gap-4"
-      >
+
+      <section className="mt-12 flex flex-wrap gap-4">
         {result.users.length > 0 ? (
           result.users.map((user) => (
             <UserCard
@@ -46,12 +46,8 @@ const Page = async ({
             />
           ))
         ) : (
-          <div
-            className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center"
-          >
-            <p>
-              No users yet
-            </p>
+          <div className="paragraph-regular text-dark200_light800 mx-auto max-w-4xl text-center">
+            <p>No users yet</p>
             <Link
               href="/sign-up"
               className="mt-2 font-bold text-accent-blue"
@@ -61,6 +57,17 @@ const Page = async ({
           </div>
         )}
       </section>
+
+      <div className="mt-10">
+        <Pagination
+          pageNumber={
+            searchParams?.page
+              ? +searchParams.page
+              : 1
+          }
+          isNext={result.isNext}
+        />
+      </div>
     </>
   );
 }
