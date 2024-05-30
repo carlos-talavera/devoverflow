@@ -1,7 +1,9 @@
 "use server"
 
 import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 import Question from "@/database/question.model";
+import User from "@/database/user.model";
 import { ObjectId } from "mongodb";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "../mongoose";
@@ -20,12 +22,22 @@ export async function createAnswer(params: CreateAnswerParams) {
     })
 
     // Add the answer to the question's answers array
-    await Question.findByIdAndUpdate(
+    const questionObj = await Question.findByIdAndUpdate(
       question,
       { $push: { answers: newAnswer._id } }
     )
 
-    // TODO: Add interaction...
+    await Interaction.create({
+      user: author,
+      action: "answer",
+      question,
+      answer: newAnswer._id,
+      tags: questionObj.tags
+    })
+
+    await User.findByIdAndUpdate(author, {
+      $inc: { reputation: 10 }
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -126,7 +138,13 @@ export async function upvoteAnswer(
       throw new Error("Answer not found");
     }
 
-    // TODO: increment author's reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasUpvoted ? -2 : 2},
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasUpvoted ? -10 : 10},
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -177,7 +195,13 @@ export async function downvoteAnswer(
       throw new Error("Answer not found");
     }
 
-    // TODO: increment author's reputation
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasDownvoted ? -2 : 2 },
+    });
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasDownvoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
