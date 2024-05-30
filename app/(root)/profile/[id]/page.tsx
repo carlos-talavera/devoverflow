@@ -95,8 +95,10 @@ const Page = async ({
       </div>
 
       <Stats
+        reputation={userInfo.user.reputation}
         totalQuestions={userInfo.totalQuestions}
         totalAnswers={userInfo.totalAnswers}
+        badgeCounts={userInfo.badgeCounts}
       />
 
       <div className="mt-10 flex gap-10">
