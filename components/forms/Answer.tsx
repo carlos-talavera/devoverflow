@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "../ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import { toast } from "../ui/use-toast"
 
 interface Props {
   question: string;
@@ -90,7 +91,10 @@ const Answer = ({
         editor.setContent(formattedAnswer);
       }
 
-      // Toast...
+      toast({
+        title: "AI Answer generated",
+        description: "The AI has generated an answer for you"
+      })
     } catch (error) {
       console.log(error)
     } finally {
